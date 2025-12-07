@@ -103,11 +103,16 @@ if (result.isError) {
 }
 ```
 
-## Roadmap
+## Why another library?
 
-  * Add `unwrap()` / `unwrapOr()` helpers
-  * Add `mapError` utility
-  * React hooks examples
+I actually found a lot of similar OSS!
+Seems like developers everywhere have had the same idea haha.
+
+Still, try-result has a slightly different goal:
+it focuses on stronger type safety and explicit error handling using a clean Result pattern.
+
+If you prefer predictable control flow and safer TypeScript,
+this library might fit your style. 😊
 
 -----
 
