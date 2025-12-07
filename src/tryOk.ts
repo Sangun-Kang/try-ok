@@ -1,6 +1,6 @@
 import { ok, err, type Result } from "./types";
 
-export async function tryResult<T, E = unknown>(
+export async function tryOk<T, E = unknown>(
   promise: Promise<T>
 ): Promise<Result<T, E>> {
   try {

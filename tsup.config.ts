@@ -2,7 +2,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: {
-    "try-result": "src/index.ts",
+    "try-ok": "src/index.ts",
   },
   format: ["esm", "cjs"],
   dts: true,

@@ -1,4 +1,4 @@
-# try-result
+# try-ok
 
 **Predictable, type-safe error handling for TypeScript.**
 Stop throwing. Start returning.
@@ -15,12 +15,12 @@ As our codebase grew, we faced the same issues repeatedly:
 
 I wanted a way to write safer code without introducing a heavy framework. I needed something simple that treats errors as **values**, just like in Go or Rust.
 
-That's why I created `try-result`—to fix these habits with a tiny, zero-dependency tool.
+That's why I created `try-ok`—to fix these habits with a tiny, zero-dependency tool.
 
 ## Installation
 
 ```bash
-npm install try-result
+npm install @sangun-kang/try-ok
 ```
 
 ## How to use
@@ -40,12 +40,12 @@ try {
 }
 ```
 
-### The Solution (`try-result`)
+### The Solution (`try-ok`)
 
-With `try-result`, you handle errors explicitly as return values:
+With `try-ok`, you handle errors explicitly as return values:
 
 ```ts
-import { tryResult } from "try-result";
+import { tryResult } from "@sangun-kang/try-ok";
 
 const result = await tryResult(fetch("/api/user").then(r => r.json()));
 
@@ -60,10 +60,10 @@ if (result.isError) {
 console.log(result.data);
 ```
 
-`try-result` works well inside React components, especially when calling an existing async function:
+`try-ok` works well inside React components, especially when calling an existing async function:
 
 ```tsx
-import { tryResult } from "try-result";
+import { tryResult } from "@sangun-kang/try-ok";
 
 export default async function Page() {
   const result = await tryResult(getData());
