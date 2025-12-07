@@ -1,4 +1,4 @@
-# safeAwait
+# try-result
 
 **Predictable, type-safe error handling for TypeScript.**
 Stop throwing. Start returning.
@@ -11,16 +11,16 @@ As our codebase grew, we faced the same issues repeatedly:
 
   * Inside `catch(e)`, the error is always `unknown`, so TypeScript can't help us.
   * `throw` breaks the control flow, making logic hard to follow.
-  * It’s easy to forget error handling when it's hidden in a `catch` block.
+  * It's easy to forget error handling when it's hidden in a `catch` block.
 
 I wanted a way to write safer code without introducing a heavy framework. I needed something simple that treats errors as **values**, just like in Go or Rust.
 
-That's why I created `safeAwait`—to fix these habits with a tiny, zero-dependency tool.
+That's why I created `try-result`—to fix these habits with a tiny, zero-dependency tool.
 
 ## Installation
 
 ```bash
-npm install safeAwait
+npm install try-result
 ```
 
 ## How to use
@@ -40,14 +40,14 @@ try {
 }
 ```
 
-### The Solution (`safeAwait`)
+### The Solution (`try-result`)
 
-With `safeAwait`, you handle errors explicitly as return values:
+With `try-result`, you handle errors explicitly as return values:
 
 ```ts
-import { safeAwait } from "safeAwait";
+import { tryResult } from "try-result";
 
-const result = await safeAwait(fetch("/api/user").then(r => r.json()));
+const result = await tryResult(fetch("/api/user").then(r => r.json()));
 
 // 1. Handle Error First (Type Guard)
 if (result.isError) {
@@ -60,13 +60,13 @@ if (result.isError) {
 console.log(result.data);
 ```
 
-safeAwait works well inside React components, especially when calling an existing async function:
+`try-result` works well inside React components, especially when calling an existing async function:
 
 ```tsx
-import { safeAwait } from "safeAwait";
+import { tryResult } from "try-result";
 
 export default async function Page() {
-  const result = await safeAwait(getData());
+  const result = await tryResult(getData());
 
   if (result.isError) {
     return <div>Oops!</div>;
@@ -95,7 +95,7 @@ You can strictly type your errors if needed:
 ```ts
 type ApiError = { status: number; message: string };
 
-const result = await safeAwait<User, ApiError>(getUser());
+const result = await tryResult<User, ApiError>(getUser());
 
 if (result.isError) {
   // TypeScript knows this is ApiError

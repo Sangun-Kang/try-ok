@@ -1,6 +1,6 @@
 import { ok, err, type Result } from "./types";
 
-export async function safeAwait<T, E = unknown>(
+export async function tryResult<T, E = unknown>(
   promise: Promise<T>
 ): Promise<Result<T, E>> {
   try {
@@ -10,3 +10,4 @@ export async function safeAwait<T, E = unknown>(
     return err(error as E);
   }
 }
+

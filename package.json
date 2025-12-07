@@ -1,16 +1,16 @@
 {
-  "name": "safeawait",
+  "name": "try-result",
   "version": "0.1.0",
   "description": "Type-safe error handling for async operations using Result pattern",
   "type": "module",
-  "main": "./dist/safeawait.cjs",
-  "module": "./dist/safeawait.js",
-  "types": "./dist/safeawait.d.ts",
+  "main": "./dist/try-result.cjs",
+  "module": "./dist/try-result.js",
+  "types": "./dist/try-result.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/safeawait.d.ts",
-      "import": "./dist/safeawait.js",
-      "require": "./dist/safeawait.cjs"
+      "types": "./dist/try-result.d.ts",
+      "import": "./dist/try-result.js",
+      "require": "./dist/try-result.cjs"
     }
   },
   "files": ["dist"],
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sangun-kang/safeAwait.git"
+    "url": "https://github.com/sangun-kang/try-result.git"
   },
   "keywords": [
     "typescript",

@@ -1,11 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { safeAwait } from "./safeAwait";
+import { tryResult } from "./tryResult";
 import { isOk, isErr } from "./types";
 
-describe("safeAwait", () => {
+describe("tryResult", () => {
 	it("should return Ok result when promise resolves", async () => {
 		const promise = Promise.resolve(42);
-		const result = await safeAwait(promise);
+		const result = await tryResult(promise);
 
 		expect(isOk(result)).toBe(true);
 		if (isOk(result)) {
@@ -17,7 +17,7 @@ describe("safeAwait", () => {
 	it("should return Err result when promise rejects", async () => {
 		const error = new Error("Test error");
 		const promise = Promise.reject(error);
-		const result = await safeAwait(promise);
+		const result = await tryResult(promise);
 
 		expect(isErr(result)).toBe(true);
 		if (isErr(result)) {
@@ -29,7 +29,7 @@ describe("safeAwait", () => {
 	it("should handle string errors", async () => {
 		const error = "String error";
 		const promise = Promise.reject(error);
-		const result = await safeAwait<string, string>(promise);
+		const result = await tryResult<string, string>(promise);
 
 		expect(isErr(result)).toBe(true);
 		if (isErr(result)) {
@@ -40,7 +40,7 @@ describe("safeAwait", () => {
 	it("should handle object data", async () => {
 		const data = { name: "test", value: 123 };
 		const promise = Promise.resolve(data);
-		const result = await safeAwait(promise);
+		const result = await tryResult(promise);
 
 		expect(isOk(result)).toBe(true);
 		if (isOk(result)) {
@@ -49,13 +49,13 @@ describe("safeAwait", () => {
 	});
 
 	it("should handle null and undefined", async () => {
-		const nullResult = await safeAwait(Promise.resolve(null));
+		const nullResult = await tryResult(Promise.resolve(null));
 		expect(isOk(nullResult)).toBe(true);
 		if (isOk(nullResult)) {
 			expect(nullResult.data).toBeNull();
 		}
 
-		const undefinedResult = await safeAwait(Promise.resolve(undefined));
+		const undefinedResult = await tryResult(Promise.resolve(undefined));
 		expect(isOk(undefinedResult)).toBe(true);
 		if (isOk(undefinedResult)) {
 			expect(undefinedResult.data).toBeUndefined();
