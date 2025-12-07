@@ -2,7 +2,7 @@ import { defineConfig } from "tsup";
 
 export default defineConfig({
   entry: {
-    "safe-await": "src/index.ts",
+    "safeawait": "src/index.ts",
   },
   format: ["esm", "cjs"],
   dts: true,

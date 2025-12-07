@@ -1,16 +1,16 @@
 {
-  "name": "safe-await",
+  "name": "safeawait",
   "version": "0.1.0",
   "description": "Type-safe error handling for async operations using Result pattern",
   "type": "module",
-  "main": "./dist/safe-await.cjs",
-  "module": "./dist/safe-await.js",
-  "types": "./dist/safe-await.d.ts",
+  "main": "./dist/safeawait.cjs",
+  "module": "./dist/safeawait.js",
+  "types": "./dist/safeawait.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/safe-await.d.ts",
-      "import": "./dist/safe-await.js",
-      "require": "./dist/safe-await.cjs"
+      "types": "./dist/safeawait.d.ts",
+      "import": "./dist/safeawait.js",
+      "require": "./dist/safeawait.cjs"
     }
   },
   "files": ["dist"],
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Sangun-Kang/safe-await.git"
+    "url": "https://github.com/sangun-kang/safeAwait.git"
   },
   "keywords": [
     "typescript",
