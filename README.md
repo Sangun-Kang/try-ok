@@ -23,74 +23,66 @@ That's why I created `try-ok`—to fix these habits with a tiny, zero-dependency
 npm install try-ok
 ```
 
-## How to use
-
-### The Problem (`try-catch`)
-
-Using `try-catch` often leads to nested code and loose typing:
-
-```ts
-try {
-  const data = await fetch("/api/user").then(r => r.json());
-  // ...logic
-} catch (error) {
-  // ❌ What is 'error'? We don't know.
-  // ❌ strict typing is lost here.
-  console.error(error);
-}
-```
-
-### The Solution (`try-ok`)
-
-With `try-ok`, you handle errors explicitly as return values:
+## Quick Start
 
 ```ts
 import { tryOk } from "try-ok";
 
 const result = await tryOk(fetch("/api/user").then(r => r.json()));
 
-// 1. Handle Error First (Type Guard)
 if (result.isError) {
-  console.error(result.error); // Typed as unknown (or your custom type)
+  console.error(result.error);
   return;
 }
 
-// 2. Safe to proceed
-// 'result.data' is now guaranteed to be valid
 console.log(result.data);
 ```
 
-`try-ok` works well inside React components, especially when calling an existing async function:
+## API
 
-```tsx
-import { tryOk } from "try-ok";
+### `tryOk(promise)` — Async
 
-export default async function Page() {
-  const result = await tryOk(getData());
+```ts
+const result = await tryOk(fetchUser());
+```
 
-  if (result.isError) {
-    return <div>Oops!</div>;
-  }
+### `tryOkSync(fn)` — Sync
 
-  return <div>I'm so happy</div>;
+```ts
+const result = tryOkSync(() => JSON.parse(jsonString));
+```
+
+### `unwrap(result, fallback)`
+
+```ts
+const user = unwrap(result, defaultUser);  // Returns data or fallback
+```
+
+### `ok(data)` / `err(error)` — Create Result directly
+
+```ts
+function divide(a: number, b: number): Result<number, string> {
+  if (b === 0) return err("Division by zero");
+  return ok(a / b);
 }
 ```
 
------
+### `isOk(result)` / `isErr(result)` — Type Guards
+
+```ts
+if (isOk(result)) { /* result.data available */ }
+if (isErr(result)) { /* result.error available */ }
+```
 
 ## Types
 
-The implementation is minimal. No magic.
-
 ```ts
-export type Ok<T> = { isError: false; data: T };
-export type Err<E> = { isError: true; error: E };
-export type Result<T, E = unknown> = Ok<T> | Err<E>;
+type Ok<T> = { isError: false; data: T };
+type Err<E> = { isError: true; error: E };
+type Result<T, E = unknown> = Ok<T> | Err<E>;
 ```
 
 ## Custom Error Types
-
-You can strictly type your errors if needed:
 
 ```ts
 type ApiError = { status: number; message: string };
@@ -98,8 +90,7 @@ type ApiError = { status: number; message: string };
 const result = await tryOk<User, ApiError>(getUser());
 
 if (result.isError) {
-  // TypeScript knows this is ApiError
-  console.log(result.error.status);
+  console.log(result.error.status);  // TypeScript knows this is ApiError
 }
 ```
 
@@ -112,8 +103,8 @@ Still, try-ok has a slightly different goal:
 it focuses on stronger type safety and explicit error handling using a clean Result pattern.
 
 If you prefer predictable control flow and safer TypeScript,
-this library might fit your style. 😊
+this library might fit your style.
 
------
+---
 
 MIT
