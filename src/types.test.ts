@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ok, err, isOk, isErr, type Result } from "./types";
+import { ok, err, isOk, isErr, unwrap, type Result } from "./types";
 
 describe("types utilities", () => {
 	describe("ok", () => {
@@ -56,6 +56,40 @@ describe("types utilities", () => {
 				// TypeScript should know result.error exists here
 				expect(result.error).toBe("error");
 			}
+		});
+	});
+
+	describe("unwrap", () => {
+		it("should return data for Ok result", () => {
+			const result = ok(42);
+			expect(unwrap(result, 0)).toBe(42);
+		});
+
+		it("should return fallback for Err result", () => {
+			const result = err("error");
+			expect(unwrap(result, 0)).toBe(0);
+		});
+
+		it("should allow different fallback type", () => {
+			const result: Result<number, string> = err("error");
+			const value = unwrap(result, "fallback");
+			expect(value).toBe("fallback");
+		});
+
+		it("should work with object data", () => {
+			const data = { name: "test", value: 123 };
+			const fallback = { name: "fallback", value: 0 };
+			const okResult = ok(data);
+			const errResult: Result<typeof data, string> = err("error");
+
+			expect(unwrap(okResult, fallback)).toEqual(data);
+			expect(unwrap(errResult, fallback)).toEqual(fallback);
+		});
+
+		it("should handle null and undefined fallback", () => {
+			const result: Result<number, string> = err("error");
+			expect(unwrap(result, null)).toBeNull();
+			expect(unwrap(result, undefined)).toBeUndefined();
 		});
 	});
 });
