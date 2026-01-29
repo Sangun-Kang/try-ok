@@ -11,3 +11,12 @@ export async function tryOk<T, E = unknown>(
   }
 }
 
+export function tryOkSync<T, E = unknown>(fn: () => T): Result<T, E> {
+  try {
+    const data = fn();
+    return ok(data);
+  } catch (error) {
+    return err(error as E);
+  }
+}
+

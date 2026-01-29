@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { tryOk } from "./tryOk";
+import { tryOk, tryOkSync } from "./tryOk";
 import { isOk, isErr } from "./types";
 
 describe("tryOk", () => {
@@ -59,6 +59,64 @@ describe("tryOk", () => {
 		expect(isOk(undefinedResult)).toBe(true);
 		if (isOk(undefinedResult)) {
 			expect(undefinedResult.data).toBeUndefined();
+		}
+	});
+});
+
+describe("tryOkSync", () => {
+	it("should return Ok result when function succeeds", () => {
+		const result = tryOkSync(() => 42);
+
+		expect(isOk(result)).toBe(true);
+		if (isOk(result)) {
+			expect(result.data).toBe(42);
+			expect(result.isError).toBe(false);
+		}
+	});
+
+	it("should return Err result when function throws", () => {
+		const error = new Error("Test error");
+		const result = tryOkSync(() => {
+			throw error;
+		});
+
+		expect(isErr(result)).toBe(true);
+		if (isErr(result)) {
+			expect(result.error).toBe(error);
+			expect(result.isError).toBe(true);
+		}
+	});
+
+	it("should handle JSON.parse success", () => {
+		const json = '{"name": "test", "value": 123}';
+		const result = tryOkSync(() => JSON.parse(json));
+
+		expect(isOk(result)).toBe(true);
+		if (isOk(result)) {
+			expect(result.data).toEqual({ name: "test", value: 123 });
+		}
+	});
+
+	it("should handle JSON.parse failure", () => {
+		const invalidJson = "not valid json";
+		const result = tryOkSync(() => JSON.parse(invalidJson));
+
+		expect(isErr(result)).toBe(true);
+		if (isErr(result)) {
+			expect(result.error).toBeInstanceOf(SyntaxError);
+		}
+	});
+
+	it("should handle typed errors", () => {
+		type CustomError = { code: number; message: string };
+		const result = tryOkSync<number, CustomError>(() => {
+			throw { code: 404, message: "Not found" };
+		});
+
+		expect(isErr(result)).toBe(true);
+		if (isErr(result)) {
+			expect(result.error.code).toBe(404);
+			expect(result.error.message).toBe("Not found");
 		}
 	});
 });
